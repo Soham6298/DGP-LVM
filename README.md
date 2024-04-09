@@ -1,5 +1,5 @@
 # DGP-LVM: Derivative Gaussian process latent variable model
-This is a repository for code availability for DGP-LVM. The codes are arranged as follows.
+This is a repository for code availability for DGP-LVM (https://arxiv.org/abs/2404.04074). The codes are arranged as follows.
 ## Models
 DGP-LVM model development files for derivative squared exponential (SE), Matern 3/2 (M32) and Matern 5/2 (M52) covariance functions. Model development is perfomed using Stan (https://mc-stan.org/).
 ## Simulation study
