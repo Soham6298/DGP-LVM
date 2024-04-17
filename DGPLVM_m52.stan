@@ -164,7 +164,7 @@ transformed parameters {
   if (is_deriv == 1) {
     vector[N] x2 = repeat_vector(x, 2);
     for (k in 1:D) {
-      matrix[N, N] K = deriv_se(x2, derivative, alpha_obs[k], alpha_grad[k], rho[k], delta);
+      matrix[N, N] K = deriv_m52(x2, derivative, alpha_obs[k], alpha_grad[k], rho[k], delta);
       f[, k] = K * eta[, k];
     }
   // For correlated outputs
@@ -172,7 +172,7 @@ transformed parameters {
   } else {
   // Computing covariance matrix for standard GP
     for (k in 1:D) {
-      matrix[M, M] K = se(x, alpha_obs[k], rho[k], delta);
+      matrix[M, M] K = m52(x, alpha_obs[k], rho[k], delta);
       f[, k] = K * eta[, k];
     }
   // For correlated outputs
