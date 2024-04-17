@@ -213,12 +213,12 @@ model_comp_list = foreach(i = 1:trials) %dopar% {
                              params[[k]]$rho, params[[k]]$alpha_obs, 
                              params[[k]]$alpha_grad, params[[k]]$sigma_obs,
                              params[[k]]$sigma_grad)
-    # Sample size
-    N <- nrow(data[[k]]$y)
+    # Sample size; y = [,1:dims[k]]
+    N <- nrow(data[[k]][,1:dims[k]])
     # Number of output dimensions
-    D <- ncol(data[[k]]$y)
+    D <- ncol(data[[k]][,1:dims[k]])
     # Compute prior SD for GP marginal and error SDs
-    sparams[[k]] <- apply(data[[k]]$y, 2, sd)
+    sparams[[k]] <- apply(data[[k]][,1:dims[k]], 2, sd)
     sparams_prior_sd[k] <- mean(sparams[[k]])
     mdgp_data[[k]] <- list()
     mdgp_fit[[k]] <- list()
@@ -226,7 +226,7 @@ model_comp_list = foreach(i = 1:trials) %dopar% {
       mdgp_data[[k]] <- list(N = N,
                              D = D,
                              M = N / 2,
-                             y = data[[k]]$y,
+                             y = data[[k]][,1:dims[k]],
                              t = data[[k]]$x_obs,
                              s = s_x,
                              sparams_prior_sd = sparams_prior_sd[k],
