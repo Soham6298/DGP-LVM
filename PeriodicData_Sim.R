@@ -130,10 +130,10 @@ cores = 25
 cl <- parallel::makeCluster(cores, type="FORK")
 doParallel::registerDoParallel(cl)
 model_comp_list = foreach(i = 1:trials) %dopar% {
-  #  if(file.exists(trial_summary_names[i])){
-  #    temp_summary_list[[i]] <- readRDS(trial_summary_names[i],'.rds')
-  #    return(temp_summary_list)
-  #  } else {
+      if(file.exists(trial_summary_names[i])){
+      temp_summary_list[[i]] <- readRDS(trial_summary_names[i],'.rds')
+      return(temp_summary_list)
+    } else {
   set.seed(i)
   # Declare all the summary variables for final output
   true <- list()
@@ -310,5 +310,6 @@ model_comp_list = foreach(i = 1:trials) %dopar% {
                                        is_vary = is_vary_list, is_corr = is_corr_list)
   saveRDS(temp_summary_list[[i]], file = paste(trial_summary_names[i],'.RDS'))
   return(temp_summary_list)
+  }
 }
 saveRDS(model_comp_list,'Model_Summary')
