@@ -130,6 +130,7 @@ cores = 25
 cl <- parallel::makeCluster(cores, type="FORK")
 doParallel::registerDoParallel(cl)
 model_comp_list = foreach(i = 1:trials) %dopar% {
+  # Check if file exists on disk (only needed when re-running trials)
       if(file.exists(trial_summary_names[i])){
       temp_summary_list[[i]] <- readRDS(trial_summary_names[i],'.rds')
       return(temp_summary_list)
