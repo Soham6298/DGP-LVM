@@ -227,7 +227,7 @@ model_comp_list = foreach(i = 1:trials) %dopar% {
                              D = D,
                              M = N / 2,
                              y = data[[k]][,1:dims[k]],
-                             t = data[[k]]$x_obs,
+                             t = data[[k]]$x_obs[1:n_obs],
                              s = s_x,
                              sparams_prior_sd = sparams_prior_sd[k],
                              derivative = data[[k]]$deriv,
