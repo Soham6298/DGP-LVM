@@ -7,6 +7,10 @@ library(tidyverse)
 library(bayesplot)
 library(ggplot2)
 library(patchwork)
+library(lemon)
+library(grid)
+library(gtable)
+library(gridExtra)
 ## Set variable names, sample points and number of trials
 nobs <- 20
 x_names <- sprintf('x[%s]', 1:nobs)
@@ -35,9 +39,9 @@ GPsummarydata <- GP_comb_x %>%
   summarise(mtrue_value = mean(true_value),
             mmean = mean(mean), msd = mean(sd), mabs_bias = mean(abs_bias),
             mrmse = mean(rmse), mrhat = mean(rhat), mess_bulk = mean(ess_bulk),
-            mess_tail = mean(ess_tail), mruntime = mean(runtime), model_dim = min(model_dim),
-            is_deriv = min(is_deriv), is_scale = min(is_scale), is_vary = min(is_vary),
-            is_corr = min(is_corr))
+            mess_tail = mean(ess_tail), mruntime = mean(runtime), model_dim = first(model_dim),
+            is_deriv = first(is_deriv), is_scale = first(is_scale), is_vary = first(is_vary),
+            is_corr = first(is_corr))
 GPsummarydata$model_dim <- as.factor(GPsummarydata$model_dim)
 levels(GPsummarydata$model_dim) <- c(10, 20, 5)
 GPsummarydata$model_dim <- factor(GPsummarydata$model_dim, levels = c(5, 10, 20))
@@ -60,7 +64,7 @@ x_ess_bulk_summary_plot <- ggplot(GPsummarydata, aes(x = model_dim, y = mess_bul
   geom_jitter(width = 0.1) + 
   facet_wrap(~bess_name) +
   labs(x = 'Output dimensions', y = 'Values') + 
-  theme(axis.ticks = element_line(linewidth = 3), legend.position = 'none') +
+  theme(axis.ticks = element_line(linewidth = 3), legend.position = 'none') 
 # Tail-ESS plot
 x_ess_tail_summary_plot <- ggplot(GPsummarydata, aes(x = model_dim, y = mess_tail)) + 
   theme_bw(base_size = 35, base_family = 'Times') +
@@ -68,7 +72,7 @@ x_ess_tail_summary_plot <- ggplot(GPsummarydata, aes(x = model_dim, y = mess_tai
   geom_jitter(width = 0.1) + 
   facet_wrap(~tess_name) +
   labs(x = 'Output dimensions', y = 'Values') + 
-  theme(axis.ticks = element_line(linewidth = 3),legend.position = 'none') +
+  theme(axis.ticks = element_line(linewidth = 3),legend.position = 'none') 
 # Convergence for hyperparameters
 '%!in%'<- function(a,b) ! a %in% b
 GP_comb_pars <- subset(GP_comb, var_names %!in% x_names)
@@ -77,9 +81,9 @@ GPsummarydata <- GP_comb_pars %>%
   summarise(mtrue_value = mean(true_value),
             mmean = mean(mean), msd = mean(sd), mabs_bias = mean(abs_bias),
             mrmse = mean(rmse), mrhat = mean(rhat), mess_bulk = mean(ess_bulk),
-            mess_tail = mean(ess_tail), mruntime = mean(runtime), model_dim = min(model_dim),
-            is_deriv = min(is_deriv), is_scale = min(is_scale), is_vary = min(is_vary),
-            is_corr = min(is_corr))
+            mess_tail = mean(ess_tail), mruntime = mean(runtime), model_dim = first(model_dim),
+            is_deriv = first(is_deriv), is_scale = first(is_scale), is_vary = first(is_vary),
+            is_corr = first(is_corr))
 GPsummarydata$model_dim <- as.factor(GPsummarydata$model_dim)
 levels(GPsummarydata$model_dim) <- c(10, 20, 5)
 GPsummarydata$model_dim <- factor(GPsummarydata$model_dim, levels = c(5, 10, 20))
@@ -102,7 +106,7 @@ pars_ess_bulk_summary_plot <- ggplot(GPsummarydata, aes(x = model_dim, y = mess_
   facet_wrap(~bess_name) +
   theme_bw(base_size = 35, base_family = 'Times') + 
   labs(x = 'Output dimensions', y = 'Values') + 
-  theme(axis.ticks = element_line(linewidth = 3), legend.position = 'none') +
+  theme(axis.ticks = element_line(linewidth = 3), legend.position = 'none') 
 # Tail-ESS plot
 pars_ess_tail_summary_plot <- ggplot(GPsummarydata, aes(x = model_dim, y = mess_tail)) + 
   geom_violin(linewidth = 1) + 
@@ -110,7 +114,7 @@ pars_ess_tail_summary_plot <- ggplot(GPsummarydata, aes(x = model_dim, y = mess_
   facet_wrap(~tess_name) +
   theme_bw(base_size = 35, base_family = 'Times') + 
   labs(x = 'Output dimensions', y = 'Values') + 
-  theme(axis.ticks = element_line(linewidth = 3),legend.position = 'none') +
+  theme(axis.ticks = element_line(linewidth = 3),legend.position = 'none') 
 # Combine the plots
 plot_valid_gp <- ((x_rhat_summary_plot + x_ess_bulk_summary_plot + x_ess_tail_summary_plot) /
                  (pars_rhat_summary_plot + pars_ess_bulk_summary_plot + pars_ess_tail_summary_plot) + 
@@ -135,9 +139,9 @@ Persummarydata <- Per_comb_x %>%
   summarise(mtrue_value = mean(true_value),
             mmean = mean(mean), msd = mean(sd), mabs_bias = mean(abs_bias),
             mrmse = mean(rmse), mrhat = mean(rhat), mess_bulk = mean(ess_bulk),
-            mess_tail = mean(ess_tail), mruntime = mean(runtime), model_dim = min(model_dim),
-            is_deriv = min(is_deriv), is_scale = min(is_scale), is_vary = min(is_vary),
-            is_corr = min(is_corr))
+            mess_tail = mean(ess_tail), mruntime = mean(runtime), model_dim = first(model_dim),
+            is_deriv = first(is_deriv), is_scale = first(is_scale), is_vary = first(is_vary),
+            is_corr = first(is_corr))
 Persummarydata$model_dim <- as.factor(Persummarydata$model_dim)
 levels(Persummarydata$model_dim) <- c(10, 20, 5)
 Persummarydata$model_dim <- factor(Persummarydata$model_dim, levels = c(5, 10, 20))
@@ -160,7 +164,7 @@ x_ess_bulk_summary_plot <- ggplot(Persummarydata, aes(x = model_dim, y = mess_bu
   facet_wrap(~bess_name) +
   theme_bw(base_size = 35, base_family = 'Times') + 
   labs(x = 'Output dimensions', y = 'Values') + 
-  theme(axis.ticks = element_line(linewidth = 3), legend.position = 'none') +
+  theme(axis.ticks = element_line(linewidth = 3), legend.position = 'none') 
 # Tail-ESS plot
 x_ess_tail_summary_plot <- ggplot(Persummarydata, aes(x = model_dim, y = mess_tail)) + 
   geom_violin(linewidth = 1) + 
@@ -168,7 +172,7 @@ x_ess_tail_summary_plot <- ggplot(Persummarydata, aes(x = model_dim, y = mess_ta
   facet_wrap(~tess_name) +
   theme_bw(base_size = 35, base_family = 'Times') + 
   labs(x = 'Output dimensions', y = 'Values') + 
-  theme(axis.ticks = element_line(linewidth = 3), legend.position = 'none') +
+  theme(axis.ticks = element_line(linewidth = 3), legend.position = 'none') 
 # Convergence for hyperparameters
 Per_comb_pars <- subset(Per_comb, var_names %!in% x_names)
 Persummarydata <- Per_comb_pars %>%
@@ -176,9 +180,9 @@ Persummarydata <- Per_comb_pars %>%
   summarise(mtrue_value = mean(true_value),
             mmean = mean(mean), msd = mean(sd), mabs_bias = mean(abs_bias),
             mrmse = mean(rmse), mrhat = mean(rhat), mess_bulk = mean(ess_bulk),
-            mess_tail = mean(ess_tail), mruntime = mean(runtime), model_dim = min(model_dim),
-            is_deriv = min(is_deriv), is_scale = min(is_scale), is_vary = min(is_vary),
-            is_corr = min(is_corr))
+            mess_tail = mean(ess_tail), mruntime = mean(runtime), model_dim = first(model_dim),
+            is_deriv = first(is_deriv), is_scale = first(is_scale), is_vary = first(is_vary),
+            is_corr = first(is_corr))
 Persummarydata$model_dim <- as.factor(Persummarydata$model_dim)
 levels(Persummarydata$model_dim) <- c(10, 20, 5)
 Persummarydata$model_dim <- factor(Persummarydata$model_dim, levels = c(5, 10, 20))
@@ -201,7 +205,7 @@ pars_ess_bulk_summary_plot <- ggplot(Persummarydata, aes(x = model_dim, y = mess
   facet_wrap(~bess_name) +
   theme_bw(base_size = 35, base_family = 'Times') + 
   labs(x = 'Output dimensions', y = 'Values') + 
-  theme(axis.ticks = element_line(linewidth = 3), legend.position = 'none') +
+  theme(axis.ticks = element_line(linewidth = 3), legend.position = 'none') 
 # Tail-ESS plot
 pars_ess_tail_summary_plot <- ggplot(Persummarydata, aes(x = model_dim, y = mess_tail)) + 
   geom_violin(linewidth = 1) + 
@@ -209,7 +213,7 @@ pars_ess_tail_summary_plot <- ggplot(Persummarydata, aes(x = model_dim, y = mess
   facet_wrap(~tess_name) +
   theme_bw(base_size = 35, base_family = 'Times') + 
   labs(x = 'Output dimensions', y = 'Values') + 
-  theme(axis.ticks = element_line(linewidth = 3), legend.position = 'none') +
+  theme(axis.ticks = element_line(linewidth = 3), legend.position = 'none') 
 # Combine plots
 plot_valid_per <- ((x_rhat_summary_plot + x_ess_bulk_summary_plot + x_ess_tail_summary_plot) /
                       (pars_rhat_summary_plot + pars_ess_bulk_summary_plot + pars_ess_tail_summary_plot) + 
