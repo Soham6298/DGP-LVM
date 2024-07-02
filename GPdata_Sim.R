@@ -47,7 +47,7 @@ kernel <- function(x, d, alpha_obs, alpha_grad, rho, delta) {
       } else if(d[i] == 0 && d[j] == 1) {
         K[i, j] = (alpha_obs * alpha_grad) / rho^2 * (x[i] - x[j]) * exp(-(x[i] - x[j])^2 / (2*rho^2))
       } else if(d[i] == 1 && d[j] == 0) {
-        K[i, j] = (alpha_obs * alpha_grad) / rho^2 * (x[j] - x[j]) * exp(-(x[i] - x[j])^2 / (2*rho^2))
+        K[i, j] = (alpha_obs * alpha_grad) / rho^2 * (x[j] - x[i]) * exp(-(x[i] - x[j])^2 / (2*rho^2))
       } else if(d[i] == 1 && d[j] == 1) {
         K[i, j] = alpha_grad^2 / rho^4 * (rho^2 - (x[i] - x[j])^2) * exp(-(x[i] - x[j])^2 / (2*rho^2))
       }
