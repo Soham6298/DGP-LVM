@@ -15,7 +15,7 @@ library(gridExtra)
 # Source functions
 source('DgplvmSimFns.R')
 ## Set variable names, sample points and number of trials
-simdata_out <- readRDS('SimDataOutput.rds')  #change according to output file name from SimStudy
+simdata_out <- readRDS('simulation results/dgplvm_simout_se.rds')  #change according to output file name from SimStudy
 simdata_out$vary <- as.factor(simdata_out$vary)
 simdata_out$corr <- as.factor(simdata_out$corr)
 simdata_out$deriv_scale <- as.factor(paste(simdata_out$deriv, simdata_out$scale))

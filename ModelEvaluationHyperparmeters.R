@@ -1,7 +1,7 @@
 ## Plots for hyperparameters
 # Prepare data for plots
 ## Set variable names, sample points and number of trials
-simdata_out <- readRDS('SimDataOutput.rds')  #change according to output file name from SimStudy
+simdata_out <- readRDS('simulation results/dgplvm_simout_se.rds')  #change according to output file name from SimStudy
 simdata_out$model_cond <- paste0(simdata_out$d,'_',simdata_out$deriv, 
                                  simdata_out$scale, simdata_out$vary, simdata_out$corr)
 simdata_out$vary <- as.factor(simdata_out$vary)

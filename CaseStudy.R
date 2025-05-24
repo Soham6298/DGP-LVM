@@ -15,7 +15,7 @@ library(gridExtra)
 source('DgplvmSimFns.R')
 stanmodel <- stan_model('DerivGPmodels.stan')
 # Read data
-cellcycle <- readRDS('DGPLVMcasestudydata.Rdata')
+cellcycle <- readRDS('case study data/DGPLVMcasestudydata.Rdata')
 # Data cleanup
 cellcycle[cellcycle==0] <- NA
 cellcycle <- na.omit(cellcycle)

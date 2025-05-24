@@ -11,7 +11,7 @@ library(gtable)
 # Source functions
 source('DgplvmSimFns.R')
 ## Set variable names, sample points and number of trials
-simdata_out <- readRDS('SimDataOutput.rds') #change according to output file name from SimStudy
+simdata_out <- readRDS('simulation results/dgplvm_simout_se.rds') #change according to output file name from SimStudy
 simdata_out <- subset(simdata_out, class == 'x')
 simdata_out$vary <- as.factor(simdata_out$vary)
 simdata_out$corr <- as.factor(simdata_out$corr)
